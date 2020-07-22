@@ -2,10 +2,10 @@ package dao
 
 import (
 	"fmt"
+	"github.com/goinggo/mapstructure"
 	"github.com/kukayyou/commonlib/myhttp"
 	"github.com/kukayyou/commonlib/mylog"
 	"github.com/kukayyou/commonlib/token"
-	"github.com/goinggo/mapstructure"
 )
 
 type MiniUserInfoResp struct {
@@ -29,7 +29,7 @@ func GetMiniUserInfo(requestID, openID string) (*MiniUserInfoResp, error) {
 	req["openId"] = openID
 	req["serverToken"], _ = token.CreateServerToken("bottleserver", int64(^uint(0)>>1))
 
-	resp := myhttp.RequestWithHytrix("api.tutor.com.userserver", "/userserver/miniuser/infos", req)
+	resp := myhttp.RequestWithHytrix(requestID, "api.tutor.com.userserver", "/userserver/miniuser/infos", req)
 	if resp == nil {
 		mylog.Error("requestID:%s, get mini user info is null", requestID)
 		return nil, fmt.Errorf("get mini user info is null")
